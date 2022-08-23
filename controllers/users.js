@@ -10,12 +10,6 @@ const UnauthorizedError = require('../errors/UnauthorizedError');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
-const getUsers = (req, res, next) => {
-  User.find({})
-    .then((users) => res.send(users))
-    .catch(next);
-};
-
 const getUser = (req, res, next) => {
   const id = req.params.userId;
   User.findById(id)
@@ -71,11 +65,6 @@ const login = (req, res, next) => {
     });
 };
 
-const getUserMe = (req, res, next) => {
-  User.findById(req.user._id).then((user) => res.status(200).send(user))
-    .catch(next);
-};
-
 const updateUser = (req, res, next) => {
   const { name, about } = req.body;
   User.findByIdAndUpdate(
@@ -97,36 +86,9 @@ const updateUser = (req, res, next) => {
     });
 };
 
-const updateAvatar = (req, res, next) => {
-  const { avatar } = req.body;
-  if (!avatar) {
-    next(new BadRequestError('Аватар пользователя не найден.'));
-  }
-  User.findByIdAndUpdate(
-    req.user._id,
-    { avatar },
-    { new: true, runValidators: true },
-  )
-    .then((user) => {
-      if (!user) {
-        next(new NotFoundError('Пользователь с указанным _id не найден.'));
-      }
-      return res.send(user);
-    })
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        next(new BadRequestError('Переданы некорректные данные при обновлении профиля.'));
-      }
-      return next(err);
-    });
-};
-
 module.exports = {
-  getUsers,
   getUser,
   createUser,
   updateUser,
-  updateAvatar,
   login,
-  getUserMe,
 };
