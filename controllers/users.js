@@ -11,7 +11,7 @@ const UnauthorizedError = require('../errors/UnauthorizedError');
 const { NODE_ENV, JWT_SECRET } = process.env;
 
 const getUser = (req, res, next) => {
-  const id = req.params.userId;
+  const id = req.user._id;
   User.findById(id)
     .then((user) => {
       if (!user) {
@@ -66,21 +66,19 @@ const login = (req, res, next) => {
 };
 
 const updateUser = (req, res, next) => {
-  const { name, about } = req.body;
+  const { name, email } = req.body;
   User.findByIdAndUpdate(
     req.user._id,
-    { name, about },
+    { name, email },
     { new: true, runValidators: true },
   )
-    .then((user) => {
-      if (!user) {
-        next(new BadRequestError('Пользователь по указанному _id не найден.'));
-      }
-      return res.send(user);
-    })
+    .then((user) => res.send(user))
     .catch((err) => {
+      if (err.code === 11000) {
+        return next(new CreateError('Неверный email.'));
+      }
       if (err.name === 'ValidationError') {
-        next(new BadRequestError('Переданы некорректные данные при обновлении профиля.'));
+        return next(new BadRequestError('Неверный тип данных.'));
       }
       return next(err);
     });

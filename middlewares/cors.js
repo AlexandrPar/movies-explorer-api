@@ -1,8 +1,4 @@
 const allowedCors = [
-  'http://api.alexanderpar.students.nomoredomains.sbs',
-  'https://api.alexanderpar.students.nomoredomains.sbs',
-  'http://alexander.par.nomoredomains.sbs',
-  'https://alexander.par.nomoredomains.sbs',
   'http://localhost:3000',
   'https://localhost:3000',
   'http://localhost:3001',
