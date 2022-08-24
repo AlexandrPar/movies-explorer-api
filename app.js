@@ -16,12 +16,16 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const routes = require('./routes/autorization');
 
-const { PORT, NODE_ENV, MONGO_URL, MONGO_URL_DEV } = require('./utils/constants');
-
+const {
+  PORT,
+  NODE_ENV,
+  MONGO_URL,
+  MONGO_URL_DEV,
+} = require('./utils/constants');
 
 const app = express();
 
-mongoose.connect(NODE_ENV === 'production' ? MONGO_URL : MONGO_URL_DEV, {useNewUrlParser: true});
+mongoose.connect(NODE_ENV === 'production' ? MONGO_URL : MONGO_URL_DEV, { useNewUrlParser: true });
 app.use(cors);
 
 app.use(requestLogger);

@@ -7,7 +7,6 @@ const {
   deleteMovies,
 } = require('../controllers/movies');
 
-
 router.get('/movies', getMovies);
 
 router.post('/movies', addMoviesValidation, addMovies);
