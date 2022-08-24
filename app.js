@@ -14,16 +14,14 @@ const cors = require('./middlewares/cors');
 const errorHandler = require('./middlewares/errorHandler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
-const roterAutoriz = require('./routes/autorization');
+const routes = require('./routes/autorization');
 
-const {
-  PORT, NODE_ENV, MONGO_URL, MONGO_URL_DEV,
-} = require('./utils/constants');
+const { PORT, NODE_ENV, MONGO_URL, MONGO_URL_DEV } = require('./utils/constants');
 
 
 const app = express();
 
-mongoose.connect(NODE_ENV === 'production' ? MONGO_URL : MONGO_URL_DEV, {useNewUrlParser: true, family: 4 });
+mongoose.connect(NODE_ENV === 'production' ? MONGO_URL : MONGO_URL_DEV, {useNewUrlParser: true});
 app.use(cors);
 
 app.use(requestLogger);
@@ -39,7 +37,7 @@ app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use('/', roterAutoriz);
+app.use(routes);
 
 app.use(errorLogger);
 app.use(errors());
