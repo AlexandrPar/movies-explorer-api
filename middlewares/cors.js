@@ -1,4 +1,8 @@
 const allowedCors = [
+  'http://api.parshukov.movies.nomoredomains.sbs',
+  'https://api.parshukov.movies.nomoredomains.sbs',
+  'http://parshukov.movies.nomoredomains.sbs',
+  'https://parshukov.movies.nomoredomains.sbs',
   'http://localhost:3000',
   'https://localhost:3000',
   'http://localhost:3001',
